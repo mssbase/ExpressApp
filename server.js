@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
 const hbs = require('express-handlebars');
-
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' })
 
 const app = express();
+
 app.engine('.hbs', hbs());
 app.set('view engine', '.hbs');
 
@@ -11,17 +13,17 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.post('/contact/send-message', (req, res) => {
 
+app.post('/contact/send-message', upload.single('image'), (req,res) => {
     const { author, sender, title, message } = req.body;
-
-    if(author && sender && title && message) {
-        res.render('contact', { isSent: true });
+    const sendFile = req.file;
+    console.log(req.body, req.file);
+    if(author && sender && title && message && sendFile) {
+        res.render('contact', { isSent: true, fileName: sendFile.originalname });
     }
     else {
-        res.render('contact', { isError: true });
+        res.render('contact', {isError: true});
     }
-
 });
 
 app.get('/', (req, res) => {

@@ -8,7 +8,8 @@
 {{#if isError}}
     <div class="isError"><p>Dont leave any field empty</p></div>
 {{/if}}
-<form action="/contact/send-message" method="POST">
+
+<form action="/contact/send-message" enctype="multipart/form-data" method="POST">
     <label>
         Your name: <input type="text" name="author">
     </label>
@@ -17,6 +18,9 @@
     </label>
     <label>
         Title: <input type="text" name="title">
+    </label>
+    <label>
+        File: <input type="file" name="image" accept=" .png, .jpg, .jpeg, .gif">
     </label>
     <label>
         Message: <textarea name="message"></textarea>
